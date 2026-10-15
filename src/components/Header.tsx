@@ -158,7 +158,7 @@ export const Header: React.FC = () => {
 
         {/* Center: Top Navigation Tabs */}
         <nav
-          className="flex-1 flex items-center gap-1 xl:gap-1.5 overflow-x-auto no-scrollbar h-full px-1"
+          className="flex-1 flex items-center justify-center gap-0.5 xl:gap-1 overflow-x-auto no-scrollbar h-full px-4 xl:px-6 mx-2"
           aria-label="Primary Header Navigation"
         >
           {HEADER_NAV_ITEMS.map((item) => {
@@ -172,16 +172,16 @@ export const Header: React.FC = () => {
               <Link
                 key={item.id}
                 href={item.href}
-                className={`relative flex items-center gap-1.5 px-2.5 xl:px-3 h-full text-[12.5px] font-medium whitespace-nowrap transition-colors group ${item.badge ? "pt-2.5" : ""
+                className={`relative flex items-center gap-1 px-1.5 xl:px-2 h-full text-[11.5px] font-semibold whitespace-nowrap transition-colors group ${item.badge ? "pt-2.5" : ""
                   }`}
                 style={{
-                  color: isActive ? "var(--primary)" : "var(--text-muted)",
+                  color: isActive ? "var(--primary)" : "var(--text-main)",
                 }}
               >
                 {/* Floating Badge (ADD ON or NEW) - positioned cleanly at top */}
                 {item.badge && (
                   <span
-                    className={`absolute top-1 left-1/2 -translate-x-1/2 transform text-[8px] font-bold px-1.5 py-0.2 rounded-xs leading-none tracking-tight shadow-2xs transition-transform group-hover:scale-105 ${item.badge.type === "addon" ? "badge-addon" : "badge-new"
+                    className={`absolute top-1 left-1/2 -translate-x-1/2 transform text-[7.5px] font-bold px-1 py-0.2 rounded-xs leading-none tracking-tight shadow-2xs transition-transform group-hover:scale-105 ${item.badge.type === "addon" ? "badge-addon" : "badge-new"
                       }`}
                   >
                     {item.badge.text}
@@ -191,18 +191,18 @@ export const Header: React.FC = () => {
                 <Icon
                   className={`w-3.5 h-3.5 shrink-0 transition-colors ${isActive
                     ? ""
-                    : "text-gray-500 group-hover:text-gray-800 dark:group-hover:text-gray-200"
+                    : "text-gray-700 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white"
                     }`}
                   style={{
                     color: isActive ? "var(--primary)" : undefined,
                   }}
                 />
-                <span className={isActive ? "font-semibold" : ""}>{item.label}</span>
+                <span className="font-semibold tracking-tight">{item.label}</span>
 
                 {/* Active Underline Indicator */}
                 {isActive && (
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-t"
+                    className="absolute bottom-0 left-0 right-0 h-[2.5px] rounded-t"
                     style={{ backgroundColor: "var(--primary)" }}
                   />
                 )}
