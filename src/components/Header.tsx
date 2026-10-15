@@ -19,10 +19,15 @@ import {
   Sun,
   Building,
   LucideIcon,
+  Menu,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { SearchModal } from "./SearchModal";
 import { ProfileDrawer } from "./ProfileDrawer";
+
+interface HeaderProps {
+  onOpenMobileMenu?: () => void;
+}
 
 interface NavItem {
   id: string;
@@ -100,7 +105,7 @@ const HEADER_NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export const Header: React.FC = () => {
+export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu }) => {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -109,15 +114,26 @@ export const Header: React.FC = () => {
   return (
     <>
       <header
-        className="app-header sticky top-0 z-40 w-full flex items-center justify-between px-4 select-none transition-colors"
+        className="app-header sticky top-0 z-40 w-full flex items-center justify-between px-3 md:px-4 select-none transition-colors"
         style={{
           height: "var(--header-height)",
           backgroundColor: "var(--bg-surface)",
           borderBottom: "1px solid var(--border-main)",
         }}
       >
-        {/* Left Side: Brand Logo + User Name */}
-        <div className="flex items-center gap-2.5 shrink-0 pr-4">
+        {/* Left Side: 3-Bar Menu (Mobile) + Brand Logo + User Name */}
+        <div className="flex items-center gap-2 shrink-0 pr-2 md:pr-4">
+          {/* Mobile 3-bar hamburger button */}
+          <button
+            type="button"
+            onClick={onOpenMobileMenu}
+            className="md:hidden p-1.5 -ml-1 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
+            title="Open navigation menu"
+            aria-label="Open navigation menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+
           <Link
             href="/"
             className="flex items-center gap-2.5 group focus:outline-hidden"
@@ -130,21 +146,6 @@ export const Header: React.FC = () => {
                 color: "var(--text-inverse)",
               }}
             >
-              {/* 4-petal clover icon */}
-              {/* <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-4 h-4"
-              >
-                <circle cx="9" cy="9" r="4" />
-                <circle cx="15" cy="9" r="4" />
-                <circle cx="9" cy="15" r="4" />
-                <circle cx="15" cy="15" r="4" />
-              </svg> */}
               <Building className="w-4 h-4" />
             </div>
             <span
@@ -156,9 +157,9 @@ export const Header: React.FC = () => {
           </Link>
         </div>
 
-        {/* Center: Top Navigation Tabs */}
+        {/* Center: Top Navigation Tabs (Hidden on mobile) */}
         <nav
-          className="flex-1 flex items-center justify-center gap-0.5 xl:gap-1 overflow-x-auto no-scrollbar h-full px-4 xl:px-6 mx-2"
+          className="hidden md:flex flex-1 items-center justify-center gap-0.5 xl:gap-1 overflow-x-auto no-scrollbar h-full px-4 xl:px-6 mx-2"
           aria-label="Primary Header Navigation"
         >
           {HEADER_NAV_ITEMS.map((item) => {
@@ -211,14 +212,14 @@ export const Header: React.FC = () => {
           })}
         </nav>
 
-        {/* Right Side: Search, Theme Toggle, Profile Avatar */}
-        <div className="flex items-center gap-2.5 shrink-0 pl-3">
+        {/* Right Side: Search, Theme Toggle, Profile Avatar (Visible on all screen sizes) */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 pl-1 md:pl-3">
           {/* Search Trigger */}
           <button
             id="global-search-btn"
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-normal transition-all hover:border-gray-400 cursor-pointer"
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-normal transition-all hover:border-gray-400 cursor-pointer"
             style={{
               backgroundColor: "var(--bg-subtle)",
               border: "1px solid var(--border-main)",
@@ -227,9 +228,9 @@ export const Header: React.FC = () => {
             title="Search (Ctrl + K)"
           >
             <Search className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-            <span className="hidden sm:inline text-[12px] text-gray-500">Search</span>
+            <span className="text-[12px] text-gray-500">Search</span>
             <kbd
-              className="text-[10px] font-medium px-1 rounded ml-0.5"
+              className="text-[10px] font-medium px-1 rounded ml-0.5 hidden xs:inline"
               style={{
                 backgroundColor: "var(--bg-surface)",
                 border: "1px solid var(--border-main)",
@@ -244,7 +245,7 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
-            className="p-1.5 rounded-full transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+            className="p-1.5 rounded-full transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer shrink-0"
             style={{ color: "var(--text-muted)" }}
             title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
             aria-label="Toggle theme"
@@ -257,7 +258,7 @@ export const Header: React.FC = () => {
           </button>
 
           {/* User Profile Avatar with Online indicator */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
               type="button"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
